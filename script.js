@@ -1,16 +1,20 @@
+let isIOS = !!navigator.platform.match(/iPhone|iPod|iPad/);
+let audioCtx;
+
+if (isIOS) {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+let synth = window.speechSynthesis;
+let voices = [];
+let selectedVoice;
 const circle = document.querySelector('.circle');
 const text = document.getElementById('text');
 const toggleButton = document.getElementById('toggleButton');
 const voiceSelect = document.getElementById('voiceSelect');
-
 let isBreathingIn = true;
 let interval;
-let selectedVoice;
-let voices = [];
 
-let synth = window.speechSynthesis;
-
-// Populate voice list
 function populateVoiceList() {
   voices = synth.getVoices();
   voices.forEach((voice, i) => {
@@ -26,20 +30,25 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
   speechSynthesis.onvoiceschanged = populateVoiceList;
 }
 
-// Voice selection
 voiceSelect.addEventListener('change', (event) => {
   selectedVoice = voices[event.target.value];
 });
 
-// Speech function
 function speak(text) {
   let utterThis = new SpeechSynthesisUtterance(text);
   utterThis.voice = selectedVoice || voices[0];
   synth.speak(utterThis);
 }
 
-// Toggle breathing
 toggleButton.addEventListener('click', () => {
+  if (isIOS && audioCtx) {
+    let buffer = audioCtx.createBuffer(1, 1, 22050);
+    let source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start();
+  }
+
   if (interval) {
     clearInterval(interval);
     toggleButton.innerText = 'Start';
@@ -50,7 +59,6 @@ toggleButton.addEventListener('click', () => {
   }
 });
 
-// Breathing logic
 function startBreathing() {
   interval = setInterval(() => {
     if (isBreathingIn) {
