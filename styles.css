@@ -1,31 +1,61 @@
+body {
+    background: linear-gradient(to bottom, #FFB6C1, #FF69B4, #FF4500, #FF8C00);
+}
+
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: black;
   }
   
   .circle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
-    height: 100px;
+    width: 200px;  /* Increased from 100px */
+    height: 200px;  /* Increased from 100px */
     border-radius: 50%;
     background: #87CEEB;
-    text-align: center;
+    margin: 30px;  /* Increased margin */
+    background: #2E4053;
   }
   
   #text {
-    font-size: 24px;
-    margin: 0;  /* Remove default margins */
+    font-size: 36px;  /* Increased from 24px */
+    margin: 30px;  /* Increased margin */
+    white-space: nowrap;
+    color: white;
+  }
+
+  #toggleButton {
+    font-size: 36px;
+    text-align: center;
+    margin: 30px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: #2E4053; /* Same as circle for consistency */
+    color: #FFFFFF; /* White text */
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
   }
   
-  #toggleButton {
-    font-size: 24px;
-    text-align: center;
-    margin-top: 20px;
+  #toggleButton:hover {
+    background: #34495E; /* Slightly lighter on hover */
   }
+
+  #voiceSelect {
+    font-size: 36px;
+    margin: 30px;
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background: #2E4053;  /* Same as circle and button for consistency */
+    color: #FFFFFF;  /* White text */
+    appearance: none;
+    cursor: pointer;
+  }
+  
   

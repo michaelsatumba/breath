@@ -54,16 +54,16 @@ toggleButton.addEventListener('click', () => {
 function startBreathing() {
   interval = setInterval(() => {
     if (isBreathingIn) {
-      circle.style.width = '200px';
-      circle.style.height = '200px';
+      circle.style.width = '400px';
+      circle.style.height = '400px';
       text.innerText = 'Breathe Out';
       speak('Breathe Out');
     } else {
-      circle.style.width = '100px';
-      circle.style.height = '100px';
+      circle.style.width = '200px';
+      circle.style.height = '200px';
       text.innerText = 'Breathe In';
       speak('Breathe In');
     }
     isBreathingIn = !isBreathingIn;
-  }, 2000);
+  }, 4000);
 }
