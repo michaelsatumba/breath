@@ -10,42 +10,71 @@ const toggleButton = document.getElementById('toggleButton');
 let isBreathingIn = true;
 let interval;
 
-
-
 // Event listener for toggle button
 toggleButton.addEventListener('click', () => {
   breatheInAudio = breatheInAudio || new Audio('BreatheIn.mp3');
   breatheOutAudio = breatheOutAudio || new Audio('BreatheOut.mp3');
   
-
   // Toggle breathing state
   if (interval) {
     clearInterval(interval);
+    cancelAnimationFrame(animationFrameId);
     toggleButton.innerText = 'Start';
     interval = null;
   } else {
     toggleButton.innerText = 'Pause';
+    playSound('Breathe In');
     startBreathing();
   }
 });
 
+let animationFrameId;
+
 // Breathing logic
 function startBreathing() {
+  const breatheDuration = 4000; // Duration of one breathe cycle in milliseconds
+  const minSize = 200; // Minimum size of the circle
+  const maxSize = 400; // Maximum size of the circle
+  const sizeDifference = maxSize - minSize; // Difference between max and min sizes
+
+  let startTime = null; // Start time of the current breathe cycle
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp; // Initialize start time
+
+    const elapsed = timestamp - startTime; // Calculate elapsed time
+
+    // Calculate progress as a value between 0 and 1
+    const progress = Math.abs((elapsed % (2 * breatheDuration)) - breatheDuration) / breatheDuration;
+
+    // Calculate current size based on progress
+    const size = minSize + (sizeDifference * progress);
+
+    // Update circle size
+    circle.style.width = `${size}px`;
+    circle.style.height = `${size}px`;
+
+    // Continue animation
+    animationFrameId = requestAnimationFrame(animate);
+  }
+
+  // Start animation
+  requestAnimationFrame(animate);
+
+  // Start interval to toggle breathing state and play sound
   interval = setInterval(() => {
     // Decide action based on breathing state
-    const action = isBreathingIn ? 'Breathe Out' : 'Breathe In';
-    
-    // Update circle and text based on breathing state
-    circle.style.width = isBreathingIn ? '400px' : '200px';
-    circle.style.height = isBreathingIn ? '400px' : '200px';
+   const action = isBreathingIn ? 'Breathe Out' : 'Breathe In';
+
+    // Update text based on breathing state
     text.innerText = action;
-    
+
     // Play corresponding sound
     playSound(action);
 
     // Toggle state
     isBreathingIn = !isBreathingIn;
-  }, 4000);
+  }, breatheDuration);
 }
 
 // Play sound based on action

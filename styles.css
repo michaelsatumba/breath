@@ -14,8 +14,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 200px;  /* Increased from 100px */
-    height: 200px;  /* Increased from 100px */
+    width: 400px;  /* Increased from 100px */
+    height: 400px;  /* Increased from 100px */
     border-radius: 50%;
     background: #87CEEB;
     margin: 30px;  /* Increased margin */
