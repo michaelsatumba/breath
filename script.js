@@ -1,54 +1,24 @@
-let isIOS = !!navigator.platform.match(/iPhone|iPod|iPad/);
-let audioCtx;
+// Declare audio variables but don't initialize them yet
+let breatheInAudio, breatheOutAudio;
 
-if (isIOS) {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
-
-let synth = window.speechSynthesis;
-let voices = [];
-let selectedVoice;
+// Select DOM elements
 const circle = document.querySelector('.circle');
 const text = document.getElementById('text');
 const toggleButton = document.getElementById('toggleButton');
-const voiceSelect = document.getElementById('voiceSelect');
+
+// Declare state variable
 let isBreathingIn = true;
 let interval;
 
-function populateVoiceList() {
-  voices = synth.getVoices();
-  voices.forEach((voice, i) => {
-    let option = document.createElement('option');
-    option.value = i;
-    option.innerHTML = `${voice.name} (${voice.lang})`;
-    voiceSelect.appendChild(option);
-  });
-}
 
-populateVoiceList();
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = populateVoiceList;
-}
 
-voiceSelect.addEventListener('change', (event) => {
-  selectedVoice = voices[event.target.value];
-});
-
-function speak(text) {
-  let utterThis = new SpeechSynthesisUtterance(text);
-  utterThis.voice = selectedVoice || voices[0];
-  synth.speak(utterThis);
-}
-
+// Event listener for toggle button
 toggleButton.addEventListener('click', () => {
-  if (isIOS && audioCtx) {
-    let buffer = audioCtx.createBuffer(1, 1, 22050);
-    let source = audioCtx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(audioCtx.destination);
-    source.start();
-  }
+  breatheInAudio = breatheInAudio || new Audio('BreatheIn.mp3');
+  breatheOutAudio = breatheOutAudio || new Audio('BreatheOut.mp3');
+  
 
+  // Toggle breathing state
   if (interval) {
     clearInterval(interval);
     toggleButton.innerText = 'Start';
@@ -59,19 +29,27 @@ toggleButton.addEventListener('click', () => {
   }
 });
 
+// Breathing logic
 function startBreathing() {
   interval = setInterval(() => {
-    if (isBreathingIn) {
-      circle.style.width = '400px';
-      circle.style.height = '400px';
-      text.innerText = 'Breathe Out';
-      speak('Breathe Out');
-    } else {
-      circle.style.width = '200px';
-      circle.style.height = '200px';
-      text.innerText = 'Breathe In';
-      speak('Breathe In');
-    }
+    // Decide action based on breathing state
+    const action = isBreathingIn ? 'Breathe Out' : 'Breathe In';
+    
+    // Update circle and text based on breathing state
+    circle.style.width = isBreathingIn ? '400px' : '200px';
+    circle.style.height = isBreathingIn ? '400px' : '200px';
+    text.innerText = action;
+    
+    // Play corresponding sound
+    playSound(action);
+
+    // Toggle state
     isBreathingIn = !isBreathingIn;
   }, 4000);
+}
+
+// Play sound based on action
+function playSound(action) {
+  const audio = action === 'Breathe In' ? breatheInAudio : breatheOutAudio;
+  audio.play();
 }
