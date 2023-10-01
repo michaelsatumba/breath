@@ -1,6 +1,7 @@
 body {
-    background: linear-gradient(to bottom, #FFB6C1, #FF69B4, #FF4500, #FF8C00);
+  background: linear-gradient(to bottom, #0a000a, #1a001a, #2a002a);
 }
+
 
 .container {
     display: flex;
@@ -14,12 +15,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 400px;  /* Increased from 100px */
-    height: 400px;  /* Increased from 100px */
+    width: 400px; 
+    height: 400px;  
     border-radius: 50%;
-    background: #87CEEB;
-    margin: 30px;  /* Increased margin */
-    background: #2E4053;
+    background: #3a283b;
+    margin: 30px;  
   }
   
   #text {
@@ -36,14 +36,10 @@ body {
     padding: 10px 20px;
     border: none;
     border-radius: 25px;
-    background: #2E4053; /* Same as circle for consistency */
+    background: #3a283b;
     color: #FFFFFF; /* White text */
     cursor: pointer;
     transition: background 0.3s ease-in-out;
-  }
-  
-  #toggleButton:hover {
-    background: #34495E; /* Slightly lighter on hover */
   }
 
   #voiceSelect {
